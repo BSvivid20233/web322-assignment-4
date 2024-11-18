@@ -2,6 +2,7 @@ Name : BHARGAVKUMAR JITENDRABHAI SENJALIYA
 
 Student ID :151964228
 
+Assignment 2
 
 Links :
 
@@ -13,3 +14,4 @@ Link 1 : https://vercel.com/senjaliya-bhargavkumars-projects/web322-assignment-2
 Link 2 : https://vercel.live/link/web322-assignment-2-opal.vercel.app?via=project-dashboard-alias-list&p=1 
 Link 3 : https://github.com/BSvivid20233/Web322_Assignment-2/tree/main
 
+Assignment 3

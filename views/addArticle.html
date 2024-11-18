@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Article</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* Additional styles for left alignment and better spacing */
+        form {
+            width: 600px;
+            margin-left: 20px; /* Aligns form to the left side */
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn-submit {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <b><a href="/">Home</a></b>&nbsp;&nbsp;
+        <b><a href="/about">About</a></b>&nbsp;&nbsp;
+        <b><a href="/articles">Articles</a></b>&nbsp;&nbsp;
+        <b><a href="/categories">Categories</a></b>&nbsp;&nbsp;
+        <b><a href="/articles/add">Add Article</a></b>&nbsp;&nbsp;
+    </nav>
+
+    <header>
+        <h1 style="margin-left: 20px;">Add New Article</h1>
+    </header>
+
+    <main>
+        <form action="/articles/add" method="POST" enctype="multipart/form-data">
+            <!-- Title Input -->
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter article title" required>
+            </div>
+
+            <!-- Category Input -->
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category" placeholder="Enter article category" required>
+            </div>
+
+            <!-- Published Date Input -->
+            <div class="form-group">
+                <label for="articleDate">Published Date (YYYY-MM-DD)</label>
+                <input type="date" id="articleDate" name="articleDate" placeholder="yyyy-mm-dd" required>
+            </div>
+
+            <!-- Content Input -->
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea id="content" name="content" rows="6" placeholder="Enter article content" required></textarea>
+            </div>
+
+             <!-- Feature Image Input -->
+             <div class="form-group">
+                <label for="featureImage">Feature Image</label>
+                <input type="file" id="featureImage" name="featureImage">
+            </div>
+
+            <div class="form-group">
+                <label for="published">Published</label>
+                <input type="checkbox" id="published" name="published" value="true">
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-submit">Submit Article</button>
+        </form>
+    </main>
+
+    <footer>
+        <small style="margin-left: 20px;">Bhargavkumar Senjaliya - 151964228 - bjsenjaliya@myseneca.ca</small>
+    </footer>
+</body>
+</html>
