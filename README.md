@@ -2,16 +2,13 @@ Name : BHARGAVKUMAR JITENDRABHAI SENJALIYA
 
 Student ID :151964228
 
-Assignment 2
 
-Links :
+Links
 
-Github : https://github.com/BSvivid20233/Web322_Assignment-2
+Github : https://github.com/BSvivid20233/Assignment-3
 
 Vercel :
 
-Link 1 : https://vercel.com/senjaliya-bhargavkumars-projects/web322-assignment-2/5cjg5a1GBVWTa8NnLLACXa2nF2fP
-Link 2 : https://vercel.live/link/web322-assignment-2-opal.vercel.app?via=project-dashboard-alias-list&p=1 
-Link 3 : https://github.com/BSvivid20233/Web322_Assignment-2/tree/main
-
-Assignment 3
+Link 1 : https://assignment-3-senjaliya-bhargavkumars-projects.vercel.app/
+Link 2 : https://assignment-3-gamma-pink.vercel.app/
+Link 3 : https://assignment-3-git-main-senjaliya-bhargavkumars-projects.vercel.app/
