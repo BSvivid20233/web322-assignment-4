@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</head>
+<nav>
+    <b><a href="/">Home</a></b>&nbsp&nbsp;
+    <b><a href="/about">About</a></b>&nbsp&nbsp;
+    <b><a href="/articles">Articles</a></b>&nbsp&nbsp;
+    <b><a href="/categories">Categories</a></b>&nbsp&nbsp;
+    <b><a href="/articles/add">Add Article</a></b>&nbsp;&nbsp;
+</nav>
+
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">Categories</h1>
+
+  <% if (error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+  <% } else if (categories.length === 0) { %>
+      <div class="alert alert-warning">No categories found.</div>
+  <% } else { %>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Category ID</th>
+                  <th>Category Name</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% categories.forEach(category => { %>
+                  <tr>
+                      <td><%= category.id %></td>
+                      <td><%= category.name %></td>
+                  </tr>
+              <% }); %>
+          </tbody>
+      </table>
+  <% } %>
+</div>
+</body>
+
+        <footer>
+            <small> BHARGAVKUMAR SENJALIYA - 151964228 - bjsenjaliya@myseneca.ca  </small>
+        </footer>
+
+    </main>
+
+</body>
+</html>
