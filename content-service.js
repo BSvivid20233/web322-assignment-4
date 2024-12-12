@@ -2,130 +2,103 @@
 Author : BHARGAVKUMAR JITENDRABHAI SENJALIYA
 Student ID : 151964228
 Course: WEB322
+MAIL ID :- bjsenjaliya@myseneca.ca
 *********************************************************************************************************/
+const { Pool } = require('pg');
 
-const fs = require('fs');
-const path = require('path');
-
-let articles = [];
-let categories = [];
+// Configure PostgreSQL connection using Neon.tech credentials
+const pool = new Pool({
+    user: 'neondb_owner',             
+    host: 'ep-holy-feather-a5uh8qd7.us-east-2.aws.neon.tech', 
+    database: 'neondb',               
+    password: 'Z8fqYV9wEosg',         
+    port: 5432,                       
+    ssl: { rejectUnauthorized: false } 
+});
 
 // Function to activate the service
 function initialize() {
-    return new Promise((resolve, reject) => {
-        fs.readFile(path.join(__dirname, 'data', 'articles.json'), 'utf8', (err, data) => {
-            if (err) {
-                reject("Unable to read articles.json");
-                return;
-            }
-
-            try {
-                articles = JSON.parse(data);
-            } catch (parseErr) {
-                reject("Error parsing articles.json");
-                return;
-            }
-
-            fs.readFile(path.join(__dirname, 'data', 'categories.json'), 'utf8', (err, data) => {
-                if (err) {
-                    reject("Unable to read categories.json");
-                    return;
-                }
-
-                try {
-                    categories = JSON.parse(data);
-                } catch (parseErr) {
-                    reject("Error parsing categories.json");
-                    return;
-                }
-
-                resolve("Data successfully initialized");
-            });
-        });
-    });
+    return Promise.resolve("Database service initialized");
 }
 
 //To add a new article
-module.exports.addArticle = (articleData) => {
-    return new Promise((resolve, reject) => {
-        articleData.published = articleData.published ? true : false;
-        articleData.id = articles.length + 1;
-        articles.push(articleData);
-        resolve(articleData);
-    });
-};
+function addArticle(articleData) {
+    const { title, content, author, published, category_id, articleDate, featureImage } = articleData;
+
+    return pool.query(
+        'INSERT INTO articles (title, content, author, published, category_id, article_date, featureImage) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [title, content, author, published, category_id, articleDate, featureImage]
+    )
+    .then(() => Promise.resolve("Article added successfully"))
+    .catch(err => Promise.reject("Unable to add article: " + err.message));
+}
 
 //To get all articles
 function getAllArticles() {
-    return new Promise((resolve, reject) => {
-        if (articles.length > 0) {
-            resolve(articles);
-        } else {
-            reject("No articles found");
-        }
-    });
+    return pool.query('SELECT * FROM articles')
+        .then(res => res.rows)
+        .catch(err => Promise.reject("No articles found"));
 }
 
 //To get all categories
 function getCategories() {
-    return new Promise((resolve, reject) => {
-        if (categories.length > 0) {
-            resolve(categories);
-        } else {
-            reject("No categories found");
-        }
-    });
+    return pool.query('SELECT * FROM categories')
+        .then(res => res.rows)
+        .catch(err => Promise.reject("No categories found"));
 }
 
 //To get articles by category
-module.exports.getArticlesByCategory = (category) => {
-    return new Promise((resolve, reject) => {
-        const filteredArticles = articles.filter(article => article.category === category);
-        if (filteredArticles.length > 0) {
-            resolve(filteredArticles);
-        } else {
-            reject("No results returned");
-        }
-    });
-};
+function getArticlesByCategory(category) {
+    return pool.query(
+        'SELECT * FROM articles WHERE category_id = (SELECT id FROM categories WHERE LOWER(name) = $1)',
+        [category.toLowerCase()]
+    )
+    .then(res => res.rows)
+    .catch(err => Promise.reject(`No articles found for category: ${category}`));
+}
 
 //To get articles by minimum date
-module.exports.getArticlesByMinDate = (minDateStr) => {
-    return new Promise((resolve, reject) => {
-        const minDate = new Date(minDateStr);
-        if (isNaN(minDate)) {
-            return reject("Invalid date format");
-        }
-
-        const filteredArticles = articles.filter(article => new Date(article.articleDate) >= minDate);
-        if (filteredArticles.length > 0) {
-            resolve(filteredArticles);
-        } else {
-            reject("No results returned");
-        }
-    });
-};
+function getArticlesByMinDate(minDateStr) {
+    return pool.query('SELECT * FROM articles WHERE article_date >= $1', [minDateStr])
+        .then(res => res.rows)
+        .catch(err => Promise.reject("No results returned: " + err.message));
+}
 
 //To get an article by ID
-module.exports.getArticleById = (id) => {
-    return new Promise((resolve, reject) => {
-        const foundArticle = articles.find(article => article.id == id);
-        if (foundArticle) {
-            resolve(foundArticle);
-        } else {
-            reject("No result returned");
-        }
-    });
-};
+function getArticleById(id) {
+    return pool.query('SELECT * FROM articles WHERE id = $1', [id])
+        .then((res) => res.rows[0])
+        .catch((err) => Promise.reject("Unable to fetch article: " + err.message));
+}
+
+
+function updateArticle(id, updatedData) {
+    const { title, content, author, published, category_id, articleDate } = updatedData;
+
+    return pool.query(
+        'UPDATE articles SET title = $1, content = $2, author = $3, published = $4, category_id = $5, article_date = $6 WHERE id = $7',
+        [title, content, author, published, category_id, articleDate, id]
+    )
+    .then(() => Promise.resolve("Article updated successfully"))
+    .catch(err => Promise.reject("Unable to update article: " + err.message));
+}
+
+function deleteArticle(id) {
+    return pool.query('DELETE FROM articles WHERE id = $1', [id])
+        .then(() => Promise.resolve("Article deleted successfully"))
+        .catch(err => Promise.reject("Unable to delete article: " + err.message));
+}
 
 // Module exports
+// Export all functions
 module.exports = {
-    initialize: initialize,
-    getAllArticles: getAllArticles,
-    getCategories: getCategories,
-    addArticle: module.exports.addArticle,
-    getArticlesByCategory: module.exports.getArticlesByCategory,
-    getArticlesByMinDate: module.exports.getArticlesByMinDate,
-    getArticleById: module.exports.getArticleById
+    initialize,
+    getAllArticles,
+    getCategories,
+    getArticlesByCategory,
+    addArticle,
+    updateArticle,
+    deleteArticle,
+    getArticleById,
+    getArticlesByMinDate
 };
-

@@ -16,6 +16,7 @@
     <b><a href="/articles">Articles</a></b>&nbsp&nbsp;
     <b><a href="/categories">Categories</a></b>&nbsp&nbsp;
     <b><a href="/articles/add">Add Article</a></b>&nbsp;&nbsp;
+    <b><a href="/articles/edit">Edit and Delete</a></b>&nbsp;&nbsp;
 </nav>
 <body>
 
@@ -25,7 +26,7 @@
         <p>Published on: <%= article.articleDate %></p>
     </header>
     <main>
-        <!-- Feature image is displayed only if it exists -->
+        <!--displayed image if exists -->
         <% if (article.featureImage) { %>
             <img src="<%= article.featureImage %>" alt="<%= article.title %>">
         <% } %>

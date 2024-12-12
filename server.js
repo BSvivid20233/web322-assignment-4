@@ -42,8 +42,25 @@ contentService.initialize()
             res.render('about', { title: "About Me" });
         });
 
+        // Edit the articles: 
+        
+        app.get('/articles/edit', (req, res) =>
+            {res.render('edit', {Title: "edit or delete file"});
+            });
+    
+            app.get('/articles/edit/:id', async (req, res) => {
+                try {
+                    const article = await contentService.getArticleById(req.params.id);
+                    if (!article) {
+                        return res.status(404).render('404', { message: "Article Missing." });
+                    }
+                    res.render('edit', { article: article, title: "Edit Article" });
+                } catch (error) {
+                    res.status(500).render('error', { message: "Error fetching article." });
+                }
+            });
 
-        // Route for fetching all articles ('/articles')
+        // Path for fetching all articles ('/articles')
         app.get('/articles', (req, res) => {
             if (req.query.category) {
                 contentService.getArticlesByCategory(req.query.category)
@@ -61,12 +78,12 @@ contentService.initialize()
         });
 
         
-          // Route for "Add Article" page
+          // Path for "Add Article" page
           app.get('/articles/add', (req, res) => {
             res.render('addArticle', { title: "Add a New Article" });
         });
         
-        // Route for fetching all categories ('/categories')
+        // Path for fetching all categories ('/categories')
         app.get('/categories', (req, res) => {
             contentService.getCategories()
                 .then((data) => res.render('categories', { categories: data, error: null }))
@@ -109,7 +126,7 @@ contentService.initialize()
             }
         });
 
-        // Route for fetching a specific article by ID
+        // Path for fetching a specific article by ID
         app.get('/article', (req, res) => {
             const articleId = req.query.id;
 
@@ -118,23 +135,23 @@ contentService.initialize()
                 .catch((err) => res.render('articles', { articles: [], error: "Article not found!" }));
         });
 
-        // Route to display a single article by ID
+        // Path to display a single article by ID
         app.get('/article/:id', (req, res) => {
             const articleId = req.params.id;
         
-            console.log("Article ID Requested: ", articleId); // Log the requested ID
+            console.log("Article ID Requested: ", articleId); 
         
             contentService.getArticleById(articleId)
                 .then((article) => {
                     if (!article.published) {
-                        console.log("Article is not published."); // Debugging info
+                        console.log("Article is not published."); 
                         return res.status(404).render('404', { message: "Article not found or not published." });
                     }
-                    console.log("Article Found: ", article); // Log the found article
+                    console.log("Article Found: ", article); 
                     res.render('article', { article });
                 })
                 .catch((err) => {
-                    console.log("Error: ", err); // Log any errors
+                    console.log("Error: ", err); 
                     res.status(404).render('404', { message: "Article not found." });
                 });
         });
